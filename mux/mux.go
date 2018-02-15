@@ -48,7 +48,7 @@ func (m *Muxer) Handle(w http.ResponseWriter, r *http.Request) {
 
 	for _, h := range m.handlers {
 		if h.Is(r) {
-			go h.Handle(w, r)
+			h.Handle(w, r)
 			return
 		}
 	}
@@ -56,7 +56,7 @@ func (m *Muxer) Handle(w http.ResponseWriter, r *http.Request) {
 	m.defaultHandlerMutex.RLock()
 	defer m.defaultHandlerMutex.RUnlock()
 
-	go m.defaultHandler.Handle(w, r)
+	m.defaultHandler.Handle(w, r)
 }
 
 func (m *Muxer) ListenAndServe(addr string,
